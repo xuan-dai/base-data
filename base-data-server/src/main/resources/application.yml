@@ -11,3 +11,16 @@ spring:
 mybatis:
   type-aliases-package: cn.gorillahug.base.data.model
   mapper-locations: classpath:mapper/*.xml
+sdk-version-whitelist:
+  list:
+    - version: 2.8.0
+      appkeys:
+        - a
+        - b
+        - c
+    - version: 2.8.1
+      appkeys:
+        - a
+        - b
+        - c
+
