@@ -1,8 +1,8 @@
 package cn.gorillahug.base.data.server.config;
 
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
@@ -13,12 +13,13 @@ import java.util.*;
  * @version 2019/5/25 20:00
  */
 @Slf4j
-public class YmlConfig {
+@Component
+public class YmlConfigReader {
     private static Map<String, Object> allMap = new HashMap<>();
 
-    static {
+    public Map<String, Object> reader(String location){
         Yaml yaml = new Yaml();
-        ClassPathResource classPathResource = new ClassPathResource("application.yml");
+        ClassPathResource classPathResource = new ClassPathResource(location);
         Iterator<Object> result = null;
         try {
             result = yaml.loadAll(classPathResource.getInputStream()).iterator();
@@ -29,9 +30,10 @@ public class YmlConfig {
             Map map = (Map) result.next();
             iteratorYml(map, null);
         }
+        return allMap;
     }
 
-    public static void iteratorYml(Map map, String key) {
+    private void iteratorYml(Map map, String key) {
         Iterator iterator = map.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
@@ -53,11 +55,4 @@ public class YmlConfig {
             }
         }
     }
-
-    public static void main(String[] args) {
-        System.out.println(YmlConfig.allMap);
-        Object ss = allMap.get("sdk-version-whitelist.list");
-        log.info(JSON.toJSONString(ss));
-    }
-
 }

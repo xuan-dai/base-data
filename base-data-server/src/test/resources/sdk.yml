@@ -1,0 +1,12 @@
+sdk-version-whitelist:
+  list:
+    - version: 2.8.0
+      appkeys:
+        - a
+        - b
+        - c
+    - version: 2.8.1
+      appkeys:
+        - a
+        - b
+        - c
