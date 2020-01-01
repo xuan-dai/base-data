@@ -1,0 +1,49 @@
+---
+- hosts: localhost
+  remote_user: developer
+  vars_files:
+    - vars/{{ env }}.yml
+  tasks:
+    - name: build deploy file
+      template:
+        src: '{{ item.src }}'
+        dest: .
+      with_items:
+        - { src: 'Dockerfile'}
+        - { src: 'deploy.yaml'}
+    - name: maven package
+      command: mvn clean package -Dmaven.test.skip -T 1C -U
+      args:
+        chdir: ../
+      register: result
+    - debug: var=result.stdout_lines
+    - name: docker build image
+      command: docker build -t {{ IMAGE }} -f ./Dockerfile ..
+      register: result
+    - debug: var=result.stdout_lines
+    - name: echo deploy.yaml
+      command: cat ./deploy.yaml
+      register: result
+    - debug: var=result.stdout_lines
+    - name: k8s delete cm
+      command: kubectl delete configmap {{ CONFIG_MAP }} --ignore-not-found=true
+      register: result
+    - debug: var=result.stdout_lines
+    - name: k8s create cm
+      command: kubectl create configmap {{ CONFIG_MAP }} --from-file={{ TARGET_CATALOGUE }}/src/main/resources/profiles/{{ PROFILE }}
+      register: result
+    - debug: var=result.stdout_lines
+    - name: k8s apply
+      command: kubectl apply -f ./deploy.yaml
+    - name: 等待发布开始
+      command: kubectl get deploy '{{ PROJECT_NAME }}-{{ PARTITION }}'
+      register: result
+      until: result.stdout_lines[1].split()[1] != result.stdout_lines[1].split()[4]
+      retries: 30
+      delay: 5
+    - name: 等待deploy发布完成
+      command: kubectl get deploy '{{ PROJECT_NAME }}-{{ PARTITION }}'
+      register: result
+      until: result.stdout_lines[1].split()[1] == result.stdout_lines[1].split()[4]
+      retries: 100
+      delay: 5

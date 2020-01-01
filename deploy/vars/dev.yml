@@ -1,0 +1,10 @@
+JAVA_MEM_OPTS: -Xms1g -Xmx1g -Xss256k
+PROJECT_NAME: base-data-server
+GROUP: gorrila
+PLACE: gorrila
+PARTITION: 0
+REPLICAS: 1
+PROFILE: "{{ lookup('env','PROFILE') }}"
+IMAGE: "{{ PROJECT_NAME }}:{{ lookup('env','CI_BUILD_REF')|truncate(8, True, '') }}"
+CONFIG_MAP: "cm-{{ PROJECT_NAME }}-prod-{{ PARTITION }}"
+TARGET_CATALOGUE: "../{{ PROJECT_NAME }}"

@@ -1,0 +1,117 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ PROJECT_NAME }}
+  labels:
+    app: {{ PROJECT_NAME }}
+spec:
+  ports:
+    - port: 8080
+      name: serve
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: {{ PROJECT_NAME }}
+  type: ClusterIP
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ PROJECT_NAME }}-{{ PARTITION }}
+  labels:
+    app: {{ PROJECT_NAME }}
+    group: {{ GROUP }}
+spec:
+  replicas: {{ REPLICAS }}
+  selector:
+    matchLabels:
+      app: {{ PROJECT_NAME }}
+      partition: "{{ PARTITION }}"
+  minReadySeconds: 35
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: {{ PROJECT_NAME }}
+        partition: "{{ PARTITION }}"
+        group: {{ GROUP }}
+        date: "{{ ansible_date_time.iso8601_basic_short }}"
+    spec:
+      terminationGracePeriodSeconds: 120
+      tolerations:
+        - key: "dedicated"
+          operator: "Equal"
+          value: "portal"
+          effect: "NoSchedule"
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  app: {{ PROJECT_NAME }}
+      nodeSelector:
+        dedicated: "portal"
+        {{ GROUP }}: "true"
+        {{ PLACE }}: "true"
+      containers:
+        - image: {{ IMAGE }}
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - "/bin/sh"
+                  - "-c"
+                  - "curl -X POST http://127.0.0.1:18080/service-registry/instance-status -H 'Content-Type: text/plain' -d OUT_OF_SERVICE; sleep 65;"
+          name: {{ PROJECT_NAME }}
+          env:
+            - name: PROFILE
+              value: {{ PROFILE }}
+            - name: ALARM_JAR_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: ALARM_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: JAVA_MEM_OPTS
+              value: {{ JAVA_MEM_OPTS }}
+          resources:
+            requests:
+              cpu: 0.01
+              memory: 200Mi
+            limits:
+              cpu: 8
+              memory: 4Gi
+          ports:
+            - containerPort: 8080
+              name: serve
+            - containerPort: 18080
+              name: manage
+          volumeMounts:
+            - name: logs
+              mountPath: /opt/developer/logs
+            - name: elklogs
+              mountPath: /opt/developer/elk_logs
+            - name: config
+              mountPath: /opt/developer/config
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 18080
+            initialDelaySeconds: 30
+            periodSeconds: 5
+      volumes:
+        - name: logs
+          hostPath:
+            path: /opt/developer/{{ PROJECT_NAME }}
+        - name: elklogs
+          emptyDir: {}
+        - name: config
+          configMap:
+            name: {{ CONFIG_MAP }}
