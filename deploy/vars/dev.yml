@@ -5,6 +5,6 @@ PLACE: gorrila
 PARTITION: 0
 REPLICAS: 1
 PROFILE: "{{ lookup('env','PROFILE') }}"
-IMAGE: "{{ PROJECT_NAME }}:{{ lookup('env','CI_BUILD_REF')|truncate(8, True, '') }}"
+IMAGE: "{{ PROJECT_NAME }}"
 CONFIG_MAP: "cm-{{ PROJECT_NAME }}-prod-{{ PARTITION }}"
 TARGET_CATALOGUE: "../{{ PROJECT_NAME }}"
