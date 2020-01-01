@@ -4,11 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>cn.gorillahug</groupId>
-        <artifactId>base-data</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.3.RELEASE</version>
     </parent>
 
+    <groupId>cn.gorillahug</groupId>
     <artifactId>base-data-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>base-data-api</name>
