@@ -1,0 +1,18 @@
+
+api_deploy:
+  stage: deploy
+  tags:
+    - runner-bjdz-portal
+  script:
+    - cd ./base-data-api && mvn clean deploy -Dmaven.test.skip
+  when: manual
+
+k8s_deply:
+  stage: deploy
+  script:
+    - eval export PROFILE=dev
+    - ansible-playbook deploy/main.yml -e "env=$PROFILE"
+  when: manual
+  tags:
+    - runner-gl-portal
+

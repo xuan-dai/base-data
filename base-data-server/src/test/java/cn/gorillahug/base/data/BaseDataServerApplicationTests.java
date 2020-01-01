@@ -1,4 +1,4 @@
-package cn.gorillahug.base.data.server;
+package cn.gorillahug.base.data;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

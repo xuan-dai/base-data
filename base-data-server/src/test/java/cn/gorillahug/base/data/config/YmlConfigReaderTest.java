@@ -1,6 +1,6 @@
-package cn.gorillahug.base.data.server.config;
+package cn.gorillahug.base.data.config;
 
-import cn.gorillahug.base.data.server.BaseDataServerApplication;
+import cn.gorillahug.base.data.BaseDataServerApplication;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;

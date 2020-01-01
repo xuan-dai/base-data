@@ -1,4 +1,4 @@
-package cn.gorillahug.base.data.server.config;
+package cn.gorillahug.base.data.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
@@ -15,7 +15,7 @@ import java.util.*;
 @Slf4j
 @Component
 public class YmlConfigReader {
-    private static Map<String, Object> allMap = new HashMap<>();
+    private static Map<String, Object> allMap = new HashMap<String, Object>();
 
     public Map<String, Object> reader(String location){
         Yaml yaml = new Yaml();

@@ -1,6 +1,6 @@
-package cn.gorillahug.base.data.server;
+package cn.gorillahug.base.data;
 
-import cn.gorillahug.base.data.server.config.SdkVersionBean;
+import cn.gorillahug.base.data.config.SdkVersionBean;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;

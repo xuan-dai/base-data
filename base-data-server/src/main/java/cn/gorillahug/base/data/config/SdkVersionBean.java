@@ -1,4 +1,4 @@
-package cn.gorillahug.base.data.server.config;
+package cn.gorillahug.base.data.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

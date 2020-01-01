@@ -1,13 +1,10 @@
 server:
-  port: 8080
+  port: 18080
 spring:
   application:
     name: back-front
   profiles:
-    active:
-      - '@environment@'
-  devtools:
-    add-properties: false
+    active: '@environment@'
 mybatis:
   type-aliases-package: cn.gorillahug.base.data.model
   mapper-locations: classpath:mapper/*.xml
