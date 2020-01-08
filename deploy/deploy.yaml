@@ -42,18 +42,18 @@ spec:
         date: "{{ ansible_date_time.iso8601_basic_short }}"
     spec:
       terminationGracePeriodSeconds: 120
-      tolerations:
-        - key: "dedicated"
-          operator: "Equal"
-          value: "gorilla"
-          effect: "NoSchedule"
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - topologyKey: kubernetes.io/hostname
-              labelSelector:
-                matchLabels:
-                  app: {{ PROJECT_NAME }}
+#      tolerations:
+#        - key: "dedicated"
+#          operator: "Equal"
+#          value: "gorilla"
+#          effect: "NoSchedule"
+#      affinity:
+#        podAntiAffinity:
+#          requiredDuringSchedulingIgnoredDuringExecution:
+#            - topologyKey: kubernetes.io/hostname
+#              labelSelector:
+#                matchLabels:
+#                  app: {{ PROJECT_NAME }}
       nodeSelector:
         dedicated: "gorilla"
         {{ GROUP }}: "true"
@@ -71,14 +71,14 @@ spec:
           env:
             - name: PROFILE
               value: {{ PROFILE }}
-            - name: ALARM_JAR_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-            - name: ALARM_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: spec.nodeName
+#            - name: ALARM_JAR_NAME
+#              valueFrom:
+#                fieldRef:
+#                  fieldPath: metadata.name
+#            - name: ALARM_IP
+#              valueFrom:
+#                fieldRef:
+#                  fieldPath: spec.nodeName
             - name: JAVA_MEM_OPTS
               value: {{ JAVA_MEM_OPTS }}
           resources:
@@ -93,25 +93,25 @@ spec:
               name: serve
             - containerPort: 18080
               name: manage
-          volumeMounts:
-            - name: logs
-              mountPath: /opt/developer/logs
-            - name: elklogs
-              mountPath: /opt/developer/elk_logs
-            - name: config
-              mountPath: /opt/developer/config
+#          volumeMounts:
+#            - name: logs
+#              mountPath: /opt/developer/logs
+#            - name: elklogs
+#              mountPath: /opt/developer/elk_logs
+#            - name: config
+#              mountPath: /opt/developer/config
           readinessProbe:
             httpGet:
               path: /health
               port: 18080
             initialDelaySeconds: 30
             periodSeconds: 5
-      volumes:
-        - name: logs
-          hostPath:
-            path: /opt/developer/{{ PROJECT_NAME }}
-        - name: elklogs
-          emptyDir: {}
-        - name: config
-          configMap:
-            name: {{ CONFIG_MAP }}
+#      volumes:
+#        - name: logs
+#          hostPath:
+#            path: /opt/developer/{{ PROJECT_NAME }}
+#        - name: elklogs
+#          emptyDir: {}
+#        - name: config
+#          configMap:
+#            name: {{ CONFIG_MAP }}
