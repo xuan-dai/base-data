@@ -13,6 +13,11 @@
     <name>base-data</name>
     <description>provide base data service</description>
 
+    <modules>
+        <module>base-data-api</module>
+        <module>base-data-server</module>
+    </modules>
+
     <properties>
         <java.version>1.8</java.version>
     </properties>
