@@ -14,7 +14,7 @@ spec:
     app: {{ PROJECT_NAME }}
   type: ClusterIP
 ---
-apiVersion: apps/v1beta2
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: {{ PROJECT_NAME }}-{{ PARTITION }}
@@ -68,6 +68,7 @@ spec:
 #                  - "-c"
 #                  - "curl -X POST http://127.0.0.1:18080/service-registry/instance-status -H 'Content-Type: text/plain' -d OUT_OF_SERVICE; sleep 65;"
           name: {{ PROJECT_NAME }}
+          imagePullPolicy: IfNotPresent
           env:
             - name: PROFILE
               value: {{ PROFILE }}
