@@ -45,7 +45,7 @@ spec:
       tolerations:
         - key: "dedicated"
           operator: "Equal"
-          value: "portal"
+          value: "gorilla"
           effect: "NoSchedule"
       affinity:
         podAntiAffinity:
@@ -55,18 +55,18 @@ spec:
                 matchLabels:
                   app: {{ PROJECT_NAME }}
       nodeSelector:
-        dedicated: "portal"
+        dedicated: "gorilla"
         {{ GROUP }}: "true"
         {{ PLACE }}: "true"
       containers:
         - image: {{ IMAGE }}
-          lifecycle:
-            preStop:
-              exec:
-                command:
-                  - "/bin/sh"
-                  - "-c"
-                  - "curl -X POST http://127.0.0.1:18080/service-registry/instance-status -H 'Content-Type: text/plain' -d OUT_OF_SERVICE; sleep 65;"
+#          lifecycle:
+#            preStop:
+#              exec:
+#                command:
+#                  - "/bin/sh"
+#                  - "-c"
+#                  - "curl -X POST http://127.0.0.1:18080/service-registry/instance-status -H 'Content-Type: text/plain' -d OUT_OF_SERVICE; sleep 65;"
           name: {{ PROJECT_NAME }}
           env:
             - name: PROFILE

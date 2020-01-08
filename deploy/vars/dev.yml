@@ -1,7 +1,7 @@
 JAVA_MEM_OPTS: -Xms1g -Xmx1g -Xss256k
 PROJECT_NAME: base-data-server
-GROUP: gorrila
-PLACE: gorrila
+GROUP: gorilla
+PLACE: gorilla
 PARTITION: 0
 REPLICAS: 1
 PROFILE: "{{ lookup('env','PROFILE') }}"
