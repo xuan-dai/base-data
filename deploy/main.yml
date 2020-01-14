@@ -38,12 +38,12 @@
     - name: 等待发布开始
       command: kubectl get deploy '{{ PROJECT_NAME }}-{{ PARTITION }}'
       register: result
-      until: result.stdout_lines[1][result.stdout_lines[0].split().index('DESIRED')] != result.stdout_lines[1][result.stdout_lines[0].split().index('AVAILABLE')]
+      until: result.stdout_lines[1].split()[result.stdout_lines[0].split().index('DESIRED')] != result.stdout_lines[1].split()[result.stdout_lines[0].split().index('AVAILABLE')]
       retries: 30
       delay: 5
     - name: 等待deploy发布完成
       command: kubectl get deploy '{{ PROJECT_NAME }}-{{ PARTITION }}'
       register: result
-      until: result.stdout_lines[1][result.stdout_lines[0].split().index('DESIRED')] == result.stdout_lines[1][result.stdout_lines[0].split().index('AVAILABLE')]
+      until: result.stdout_lines[1].split()[result.stdout_lines[0].split().index('DESIRED')] == result.stdout_lines[1].split()[result.stdout_lines[0].split().index('AVAILABLE')]
       retries: 100
       delay: 5
