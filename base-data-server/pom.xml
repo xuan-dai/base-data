@@ -17,7 +17,7 @@
         <mybatis-spring-boot-starter.version>1.1.1</mybatis-spring-boot-starter.version>
         <base-data-api.version>0.0.1-SNAPSHOT</base-data-api.version>
 <!--        <back-common.version>0.0.1-SNAPSHOT</back-common.version>-->
-        <snakeyaml.version>1.24</snakeyaml.version>
+        <snakeyaml.version>1.26</snakeyaml.version>
     </properties>
 
     <dependencies>
